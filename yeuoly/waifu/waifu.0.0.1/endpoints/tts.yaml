@@ -1,0 +1,5 @@
+path: "/api/tts"
+method: "POST"
+extra:
+  python:
+    source: "endpoints/tts.py"

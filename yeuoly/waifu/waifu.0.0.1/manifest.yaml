@@ -1,0 +1,39 @@
+version: 0.0.1
+type: plugin
+author: "yeuoly"
+name: "waifu"
+description:
+  en_US: Your waifu is here.
+  zh_Hans: 你的老婆在这里。
+label:
+  en_US: "Waifu"
+created_at: "2024-07-12T08:03:44.658609186Z"
+icon: waifu.gif
+resource:
+  memory: 1048576
+  permission:
+    tool:
+      enabled: true
+    model:
+      enabled: true
+      llm: true
+      tts: true
+    endpoint:
+      enabled: true
+    app:
+      enabled: true
+    storage: 
+      enabled: true
+      size: 1048576
+plugins:
+  endpoints:
+    - "provider/waifu.yaml"
+meta:
+  version: 0.0.1
+  arch:
+    - "amd64"
+    - "arm64"
+  runner:
+    language: "python"
+    version: "3.12"
+    entrypoint: "main"

@@ -1,0 +1,5 @@
+path: "/api/file/<name>"
+method: "POST"
+extra:
+  python:
+    source: "endpoints/file_upload.py"

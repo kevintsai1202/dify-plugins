@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ bot_name }}</title>
+    <!-- Live2D -->
+    <link href="https://cdn.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/src/live2d.min.css" rel="stylesheet" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+        :root {
+            /* Default Theme */
+            --primary-color: #FF85B3;
+            --secondary-color: #FFD9E8;
+            --background-color: #FFF0F6;
+            --text-color: #4F0D23;
+            --chat-user-bg: #FFD9E8;
+            --chat-bot-bg: #FFF5FA;
+            --button-hover: #FF6BA4;
+            --shadow-color: rgba(255, 133, 179, 0.3);
+            --border-radius: 25px;
+            --header-bg-color: rgba(255, 217, 232, 0.8);
+        }
+
+        /* Dark Theme */
+        [data-theme="dark"] {
+            --primary-color: #FF96B7;
+            --secondary-color: #4A314D;
+            --background-color: #2D1B2E;
+            --text-color: #FFE6F0;
+            --chat-user-bg: #4A314D;
+            --chat-bot-bg: #3D2840;
+            --button-hover: #FF7AA3;
+            --shadow-color: rgba(255, 150, 183, 0.3);
+            --header-bg-color: rgba(74, 49, 77, 0.9);
+        }
+
+        /* Pastel Theme */
+        [data-theme="pastel"] {
+            --primary-color: #B5D8F7;
+            --secondary-color: #E8F4FF;
+            --background-color: #F0F9FF;
+            --text-color: #2B5174;
+            --chat-user-bg: #E8F4FF;
+            --chat-bot-bg: #F5FAFF;
+            --button-hover: #9ECEF5;
+            --shadow-color: rgba(181, 216, 247, 0.3);
+            --header-bg-color: rgba(232, 244, 255, 0.9);
+        }
+
+        /* Mint Theme */
+        [data-theme="mint"] {
+            --primary-color: #7DCEA0;
+            --secondary-color: #E0F5E9;
+            --background-color: #F0FFF4;
+            --text-color: #2C4A3E;
+            --chat-user-bg: #E0F5E9;
+            --chat-bot-bg: #F0FAF5;
+            --button-hover: #6BB98D;
+            --shadow-color: rgba(125, 206, 160, 0.3);
+            --header-bg-color: rgba(224, 245, 233, 0.9);
+        }
+
+        /* Lavender Theme */
+        [data-theme="lavender"] {
+            --primary-color: #B490FF;
+            --secondary-color: #EAE4FF;
+            --background-color: #F5F2FF;
+            --text-color: #3A2F5B;
+            --chat-user-bg: #EAE4FF;
+            --chat-bot-bg: #F2EFFA;
+            --button-hover: #A07AFF;
+            --shadow-color: rgba(180, 144, 255, 0.3);
+            --header-bg-color: rgba(234, 228, 255, 0.9);
+        }
+
+        /* Sunset Theme */
+        [data-theme="sunset"] {
+            --primary-color: #FF9B7D;
+            --secondary-color: #FFE8E0;
+            --background-color: #FFF4F0;
+            --text-color: #5B3629;
+            --chat-user-bg: #FFE8E0;
+            --chat-bot-bg: #FFF0EA;
+            --button-hover: #FF8A69;
+            --shadow-color: rgba(255, 155, 125, 0.3);
+            --header-bg-color: rgba(255, 232, 224, 0.9);
+        }
+
+        /* Trans Pride Theme */
+        [data-theme="trans"] {
+            --primary-color: #5BCEFA;
+            --secondary-color: #F5A9B8;
+            --background-color: #FFF5F8;
+            --text-color: #2D2D2D;
+            --chat-user-bg: #E0F4FF;
+            --chat-bot-bg: #FFE8EE;
+            --button-hover: #4AB3E4;
+            --shadow-color: rgba(91, 206, 250, 0.3);
+            --header-bg-color: rgba(245, 169, 184, 0.9);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, var(--background-color) 0%, #FFFFFF 100%);
+            font-family: 'Poppins', 'Quicksand', sans-serif;
+            color: var(--text-color);
+            min-height: 100vh;
+            transition: all 0.3s ease;
+            background-image: url('https://cdn.jsdelivr.net/gh/cat-milk/Anime-Girls-Holding-Programming-Books/static/hearts.png');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: contain;
+            background-blend-mode: overlay;
+        }
+
+        header {
+            text-align: center;
+            padding: 1.5rem;
+            background-color: var(--header-bg-color);
+            border-bottom: 3px solid var(--primary-color);
+            box-shadow: 0 4px 15px var(--shadow-color);
+            position: relative;
+            border-radius: 0 0 30px 30px;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+            opacity: 0.8;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--text-color);
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
+            display: inline-block;
+        }
+
+        header h1::before, header h1::after {
+            content: '♡';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.8rem;
+            color: var(--primary-color);
+        }
+
+        header h1::before {
+            left: -30px;
+        }
+
+        header h1::after {
+            right: -30px;
+        }
+
+        .theme-switcher {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            gap: 10px;
+        }
+
+        .theme-switcher select {
+            padding: 8px 12px;
+            border-radius: 20px;
+            border: 2px solid var(--primary-color);
+            background: var(--secondary-color);
+            color: var(--text-color);
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            outline: none;
+            box-shadow: 0 3px 8px var(--shadow-color);
+            transition: all 0.3s ease;
+        }
+
+        .theme-switcher select:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px var(--shadow-color);
+        }
+
+        .chat-container {
+            width: 90%;
+            max-width: 800px;
+            margin: 2rem auto;
+            background-color: rgba(255, 255, 255, 0.85);
+            border-radius: 30px;
+            box-shadow: 0 10px 35px var(--shadow-color);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            border: 3px solid var(--primary-color);
+            opacity: 0.8;
+        }
+
+        #chat-log {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+            max-height: 60vh;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+            background-image: url('https://cdn.jsdelivr.net/gh/cat-milk/Anime-Girls-Holding-Programming-Books/static/hearts.png');
+            background-position: center;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-blend-mode: overlay;
+            background-color: rgba(255, 255, 255, 0.7);
+        }
+
+        .message {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            display: inline-block;
+            max-width: 80%;
+            word-wrap: break-word;
+            padding: 1rem 1.5rem;
+            border-radius: 25px;
+            font-size: 1rem;
+            animation: bounceIn 0.5s ease;
+            box-shadow: 0 4px 12px var(--shadow-color);
+            position: relative;
+        }
+
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px) scale(0.8);
+            }
+            50% {
+                transform: translateY(-5px) scale(1.05);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .message.user {
+            background-color: var(--chat-user-bg);
+            color: var(--text-color);
+            text-align: right;
+            float: right;
+            clear: both;
+            border-bottom-right-radius: 4px;
+            border: 2px solid var(--primary-color);
+        }
+
+        .message.user::after {
+            content: '✨';
+            position: absolute;
+            right: -15px;
+            top: -10px;
+            font-size: 1.2rem;
+        }
+
+        .message.bot {
+            background-color: var(--chat-bot-bg);
+            color: var(--text-color);
+            text-align: left;
+            float: left;
+            clear: both;
+            border-bottom-left-radius: 4px;
+            border: 2px solid var(--primary-color);
+        }
+
+        .message.bot::after {
+            content: '♡';
+            position: absolute;
+            left: -15px;
+            top: -10px;
+            font-size: 1.2rem;
+            color: var(--primary-color);
+        }
+
+        .input-container {
+            display: flex;
+            padding: 1.2rem;
+            border-top: 3px solid var(--primary-color);
+            background-color: var(--secondary-color);
+            backdrop-filter: blur(10px);
+            gap: 12px;
+        }
+
+        #user-input {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            border: 3px solid var(--primary-color);
+            border-radius: 25px;
+            outline: none;
+            font-size: 1rem;
+            background-color: rgba(255, 255, 255, 0.9);
+            color: var(--text-color);
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px var(--shadow-color);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        #user-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 5px 15px var(--shadow-color);
+            transform: translateY(-2px);
+        }
+
+        #user-input::placeholder {
+            color: var(--text-color);
+            opacity: 0.6;
+        }
+
+        button {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px var(--shadow-color);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transform: translateX(-100%);
+            transition: 0.6s;
+            z-index: -1;
+        }
+
+        button:hover::before {
+            transform: translateX(100%);
+        }
+
+        #send-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: 2px solid var(--primary-color);
+        }
+
+        #send-btn:hover {
+            background-color: var(--button-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px var(--shadow-color);
+        }
+
+        #reset-btn {
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        #reset-btn:hover {
+            background-color: var(--chat-user-bg);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px var(--shadow-color);
+        }
+
+        /* Background upload modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: var(--background-color);
+            margin: 10% auto;
+            padding: 20px;
+            border: 3px solid var(--primary-color);
+            border-radius: 25px;
+            width: 80%;
+            max-width: 500px;
+            box-shadow: 0 10px 35px var(--shadow-color);
+            animation: modalFadeIn 0.4s;
+        }
+
+        @keyframes modalFadeIn {
+            from {opacity: 0; transform: translateY(-50px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+
+        .close {
+            color: var(--text-color);
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: var(--primary-color);
+        }
+
+        .upload-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .file-input-container {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .file-input-label {
+            display: block;
+            padding: 12px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 25px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px var(--shadow-color);
+        }
+
+        .file-input-label:hover {
+            background-color: var(--button-hover);
+            transform: translateY(-2px);
+        }
+
+        #bg-file {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+        }
+
+        #file-name {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: var(--text-color);
+        }
+
+        #upload-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        #upload-btn:hover {
+            background-color: var(--button-hover);
+        }
+
+        .bg-preview {
+            width: 100%;
+            height: 150px;
+            border-radius: 15px;
+            border: 2px dashed var(--primary-color);
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-size: cover;
+            background-position: center;
+            color: var(--text-color);
+            font-size: 0.9rem;
+        }
+
+        #bg-settings {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            border: 2px solid var(--primary-color);
+            border-radius: 25px;
+            padding: 8px 15px;
+            cursor: pointer;
+            box-shadow: 0 3px 8px var(--shadow-color);
+            transition: all 0.3s ease;
+        }
+
+        #bg-settings:hover {
+            transform: translateY(calc(-50% - 3px));
+            box-shadow: 0 6px 15px var(--shadow-color);
+        }
+
+        @media (max-width: 768px) {
+            .chat-container {
+                width: 95%;
+                margin: 1rem auto;
+            }
+
+            .message {
+                max-width: 90%;
+            }
+
+            .input-container {
+                flex-wrap: wrap;
+            }
+
+            button {
+                flex: 1;
+                min-width: 120px;
+            }
+            
+            header h1::before, header h1::after {
+                display: none;
+            }
+
+            #bg-settings {
+                position: static;
+                transform: none;
+                margin-top: 10px;
+                width: 100%;
+            }
+
+            .theme-switcher {
+                position: static;
+                transform: none;
+                margin-top: 15px;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>{{ bot_name }}</h1>
+        <button id="bg-settings">Background Settings</button>
+        <div class="theme-switcher">
+            <select id="theme-select">
+                <option value="default">Sweet Pink</option>
+                <option value="dark">Dark Enchanting</option>
+                <option value="pastel">Fresh & Elegant</option>
+                <option value="mint">Mint Garden</option>
+                <option value="lavender">Lavender Dream</option>
+                <option value="sunset">Warm Sunset</option>
+                <option value="trans">Trans Pride</option>
+            </select>
+            <select id="model-select">
+                <option value="koharu">Koharu</option>
+                <option value="haruto">Haruto</option>
+                <option value="chitose">Chitose</option>
+                <option value="miku">Miku</option>
+                <option value="shizuku">Shizuku</option>
+            </select>
+        </div>
+    </header>
+
+    <div class="chat-container">
+        <div id="chat-log"></div>
+        <div class="input-container">
+            <input type="text" id="user-input" placeholder="Chat with me ❤️" />
+            <button id="send-btn">Send ✨</button>
+            <button id="reset-btn">Reset ♡</button>
+        </div>
+    </div>
+
+    <!-- Background Upload Modal -->
+    <div id="bg-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Upload Custom Background</h2>
+            <form id="bg-upload-form" class="upload-form" enctype="multipart/form-data">
+                <div class="file-input-container">
+                    <label for="bg-file" class="file-input-label">Select Image</label>
+                    <input type="file" id="bg-file" name="file" accept="image/*">
+                </div>
+                <div id="file-name">No file selected</div>
+                <div id="bg-preview" class="bg-preview">Preview area</div>
+                <button type="submit" id="upload-btn">Upload Background</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Live2D Widget -->
+    <script src="https://cdn.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/autoload.js"></script>
+    <script>
+        const modelMap = {
+            'koharu': "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+            'haruto': "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+            'chitose': "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+            'miku': "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+            'shizuku': "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json"
+        };
+
+        const modelSelect = document.getElementById('model-select');
+        const savedModel = localStorage.getItem('live2d_model') || 'koharu';
+        modelSelect.value = savedModel;
+
+        function initLive2D(modelName) {
+            if (window.L2Dwidget) {
+                L2Dwidget.init({
+                    "model": {
+                        jsonPath: modelMap[modelName],
+                        scale: 1
+                    },
+                    "display": {
+                        "position": "right",
+                        "width": 150,
+                        "height": 300,
+                        "hOffset": 0,
+                        "vOffset": -20
+                    },
+                    "mobile": {
+                        "show": true,
+                        "scale": 0.5
+                    },
+                    "react": {
+                        "opacityDefault": 0.7,
+                        "opacityOnHover": 0.2
+                    }
+                });
+            }
+        }
+
+        initLive2D(savedModel);
+
+        modelSelect.addEventListener('change', (e) => {
+            const modelName = e.target.value;
+            localStorage.setItem('live2d_model', modelName);
+            window.location.reload();
+        });
+
+        const themeSelect = document.getElementById('theme-select');
+        const savedTheme = localStorage.getItem('theme') || 'pastel';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        themeSelect.value = savedTheme;
+
+        themeSelect.addEventListener('change', (e) => {
+            const theme = e.target.value;
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+        });
+
+        // Background upload functionality
+        const bgModal = document.getElementById('bg-modal');
+        const bgSettings = document.getElementById('bg-settings');
+        const closeBtn = document.querySelector('.close');
+        const bgFile = document.getElementById('bg-file');
+        const fileName = document.getElementById('file-name');
+        const bgPreview = document.getElementById('bg-preview');
+        const bgUploadForm = document.getElementById('bg-upload-form');
+
+        // Open modal
+        bgSettings.addEventListener('click', () => {
+            bgModal.style.display = 'block';
+        });
+
+        // Close modal
+        closeBtn.addEventListener('click', () => {
+            bgModal.style.display = 'none';
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === bgModal) {
+                bgModal.style.display = 'none';
+            }
+        });
+
+        // Show file name when selected
+        bgFile.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                fileName.textContent = e.target.files[0].name;
+                
+                // Preview image
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    bgPreview.style.backgroundImage = `url(${e.target.result})`;
+                    bgPreview.textContent = '';
+                };
+                reader.readAsDataURL(e.target.files[0]);
+            } else {
+                fileName.textContent = 'No file selected';
+                bgPreview.style.backgroundImage = 'none';
+                bgPreview.textContent = 'Preview area';
+            }
+        });
+
+        // Handle form submission
+        bgUploadForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            if (!bgFile.files.length) {
+                alert('Please select an image file first');
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('file', bgFile.files[0]);
+
+            // get file name from file input
+            const fileName = bgFile.files[0].name;
+            // encode with base64
+            const base64FileName = btoa(fileName);
+            
+            try {
+                const response = await fetch(`/api/file/${base64FileName}`, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Upload failed');
+                }
+                
+                // Set the background image
+                document.body.style.backgroundImage = `url(/api/file/${base64FileName})`;
+                localStorage.setItem('custom_background', `/api/file/${base64FileName}`);
+            
+                // Close modal and show success message
+                bgModal.style.display = 'none';
+                alert('Background uploaded successfully!');
+                
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Upload failed, please try again');
+            }
+        });
+
+        // Load custom background if exists
+        const customBg = localStorage.getItem('custom_background');
+        if (customBg) {
+            document.body.style.backgroundImage = `url(${customBg})`;
+        }
+
+        // ==================== Chat ====================
+        const botName = '{{ bot_name }}';
+        let conversationId = localStorage.getItem('conversation_id') || '';
+
+        const chatLog = document.getElementById('chat-log');
+        const userInput = document.getElementById('user-input');
+        const sendBtn = document.getElementById('send-btn');
+        const resetBtn = document.getElementById('reset-btn');
+
+        sendBtn.addEventListener('click', sendMessage);
+        userInput.addEventListener('keypress', function (event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        });
+        resetBtn.addEventListener('click', resetConversation);
+
+        async function sendMessage() {
+            const message = userInput.value.trim();
+            if (!message) return;
+
+            appendMessage(message, 'user');
+            userInput.value = '';
+
+            const requestBody = {
+                query: message,
+                conversation_id: conversationId
+            };
+
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestBody)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                let botMessageContainer = appendMessage('', 'bot');
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder('utf-8');
+                let buffer = '';
+                let accumulatedText = '';
+
+                while (true) {
+                    const { value, done } = await reader.read();
+                    if (done) break;
+
+                    buffer += decoder.decode(value, { stream: true });
+                    const lines = buffer.split('\n\n');
+                    buffer = lines.pop() || '';
+
+                    for (const line of lines) {
+                        if (!line.trim()) continue;
+                        try {
+                            const data = JSON.parse(line);
+                            if (data.answer) {
+                                // 1) UI 显示
+                                accumulatedText += data.answer;
+                                botMessageContainer.textContent = botName + ': ' + accumulatedText;
+                                // add to #waifu-tips and add waifu-tips-active class to it
+                                const waifuTips = document.getElementById('waifu-tips');
+                                waifuTips.textContent += data.answer;
+                                waifuTips.classList.add('waifu-tips-active');
+                            }
+                            if (data.conversation_id) {
+                                conversationId = data.conversation_id;
+                                localStorage.setItem('conversation_id', conversationId);
+                            }
+                        } catch (error) {
+                            console.error('Parsing SSE chunk error:', error, line);
+                        }
+                    }
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                appendMessage('Sorry, something went wrong. Please try again later!', 'bot');
+            }
+        }
+
+        function appendMessage(text, sender) {
+            const messageEl = document.createElement('div');
+            messageEl.className = `message ${sender}`;
+            if (sender === 'bot') {
+                messageEl.textContent = botName + ': ' + text;
+            } else {
+                messageEl.textContent = text;
+            }
+            chatLog.appendChild(messageEl);
+            chatLog.scrollTop = chatLog.scrollHeight;
+            return messageEl;
+        }
+
+        function resetConversation() {
+            localStorage.removeItem('conversation_id');
+            conversationId = '';
+            chatLog.innerHTML = '';
+            appendMessage('Let\'s start over!', 'bot');
+        }
+
+        window.onload = () => {
+            const welcomeMessage = 'Hi! I\'m ' + botName + ', nice to meet you!';
+            appendMessage(welcomeMessage, 'bot');
+        };
+    </script>
+</body>
+
+</html>
